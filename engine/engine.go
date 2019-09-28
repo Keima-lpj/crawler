@@ -15,7 +15,6 @@ func Run(seeds ...Request) {
 		//获取单个的request
 		r := requests[0]
 		requests = requests[1:]
-
 		fmt.Println("Fetching Url:", r.Url)
 
 		//通过fetch获取到了utf8格式的html源代码
