@@ -17,21 +17,12 @@ func ParseCityList(contents []byte) engine.ParserResult {
 
 	result := engine.ParserResult{}
 
-	//城市太多了，只跑10个
-	limit := 10
-
 	for _, v := range match {
 		result.Requests = append(result.Requests, engine.Request{
 			Url:        string(v[1]),
 			ParserFunc: ParseCity, //这里应该传下一级解析器，也就是城市解析器
 		})
 		result.Item = append(result.Item, "City "+string(v[2]))
-
-		limit--
-
-		if limit == 0 {
-			break
-		}
 	}
 
 	return result

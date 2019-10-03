@@ -12,7 +12,15 @@ const (
 
 //珍爱网的单任务版爬虫
 func main() {
-	engine.Run(engine.Request{
+	/*engine.SimpleEngine{}.Run(engine.Request{
+		Url:        URL,
+		ParserFunc: parser.ParseCityList,
+	})*/
+
+	engine.ConcurrentEngine{
+		Schedule:    &engine.QueueScheduler{},
+		WorkerCount: 10,
+	}.Run(engine.Request{
 		Url:        URL,
 		ParserFunc: parser.ParseCityList,
 	})
