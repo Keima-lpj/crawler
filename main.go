@@ -20,6 +20,7 @@ func main() {
 	engine.ConcurrentEngine{
 		Schedule:    &engine.QueueScheduler{},
 		WorkerCount: 10,
+		ItemChan:    engine.ItemSaver("immoc"),
 	}.Run(engine.Request{
 		Url:        URL,
 		ParserFunc: parser.ParseCityList,

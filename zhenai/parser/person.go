@@ -13,10 +13,11 @@ var (
 	heightRegexp = regexp.MustCompile(`<div [^>]+>([0-9]+cm)</div>`)
 	weightRegexp = regexp.MustCompile(`<div [^>]+>([0-9]+kg)</div>`)
 	incomeRegexp = regexp.MustCompile(`<div [^>]+>月收入:([^<]+)</div>`)
+	IdRegexp     = regexp.MustCompile(`https://album.zhenai.com/u/([\d]+)`)
 )
 
 //这个是城市列表的解析器，通过解析城市列表页面的文本，返回下一级页面的request数组和对应的item
-func ParsePerson(contents []byte, gender string) engine.ParserResult {
+func ParsePerson(contents []byte, gender, url string) engine.ParserResult {
 	//使用正则表达式来匹配到对应的城市和链接
 	person := model.Person{}
 
@@ -47,8 +48,21 @@ func ParsePerson(contents []byte, gender string) engine.ParserResult {
 		person.Height = string(income[1])
 	}
 
+	var id string
+	idMatch := IdRegexp.FindSubmatch([]byte(url))
+	if len(income) == 2 {
+		id = string(idMatch[1])
+	}
+
 	result := engine.ParserResult{
-		Item: []interface{}{person},
+		Item: []engine.Item{
+			{
+				Id:      id,
+				Url:     url,
+				Type:    "zhenai",
+				Payload: person,
+			},
+		},
 	}
 
 	return result

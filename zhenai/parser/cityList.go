@@ -22,7 +22,6 @@ func ParseCityList(contents []byte) engine.ParserResult {
 			Url:        string(v[1]),
 			ParserFunc: ParseCity, //这里应该传下一级解析器，也就是城市解析器
 		})
-		result.Item = append(result.Item, "City "+string(v[2]))
 	}
 
 	return result

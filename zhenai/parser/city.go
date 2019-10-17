@@ -27,10 +27,9 @@ func ParseCity(contents []byte) engine.ParserResult {
 		result.Requests = append(result.Requests, engine.Request{
 			Url: strings.Replace(string(v[1]), "http", "https", 1),
 			ParserFunc: func(bytes []byte) engine.ParserResult {
-				return ParsePerson(bytes, sex)
+				return ParsePerson(bytes, sex, string(v[1]))
 			}, //这里应该传下一级解析器，也就是用户解析器
 		})
-		result.Item = append(result.Item, "User "+string(v[2]))
 	}
 
 	return result

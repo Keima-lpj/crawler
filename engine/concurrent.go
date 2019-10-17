@@ -8,6 +8,7 @@ import (
 type ConcurrentEngine struct {
 	Schedule    Schedule
 	WorkerCount int
+	ItemChan    chan Item
 }
 
 func (ce ConcurrentEngine) Run(seeds ...Request) {
@@ -32,9 +33,11 @@ func (ce ConcurrentEngine) Run(seeds ...Request) {
 		for _, r := range result.Requests {
 			ce.Schedule.Submit(r)
 		}
-
 		for _, v := range result.Item {
-			fmt.Printf("Got item :%v\n", v)
+			//这里将获取到的item放入itemchan中
+			go func() {
+				ce.ItemChan <- v
+			}()
 		}
 	}
 
@@ -42,7 +45,6 @@ func (ce ConcurrentEngine) Run(seeds ...Request) {
 
 func (ce ConcurrentEngine) CreateWorker(out chan ParserResult, i int) {
 	in := make(chan Request)
-
 	go func(i int) {
 		fmt.Printf("Worker #%d Start!\n", i)
 		for {

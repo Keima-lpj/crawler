@@ -10,9 +10,12 @@ type Request struct {
 //以及这些request对应的item
 type ParserResult struct {
 	Requests []Request
-	Item     []interface{}
+	Item     []Item
 }
 
-func NilParser([]byte) ParserResult {
-	return ParserResult{}
+type Item struct {
+	Id      string
+	Url     string
+	Type    string
+	Payload interface{}
 }
