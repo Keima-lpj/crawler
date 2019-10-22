@@ -24,7 +24,7 @@ func TestSave(t *testing.T) {
 
 	result, err := Save(expect, "immoc")
 	if err != nil {
-		t.Errorf("error! expect %s, get %s", result)
+		t.Errorf("error! result:%s, err:%s", result, err)
 	}
 	fmt.Println(result)
 

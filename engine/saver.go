@@ -1,22 +1,23 @@
 package engine
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log"
 
-	"github.com/olivere/elastic"
+	"gopkg.in/olivere/elastic.v5"
 )
 
 var (
-	host   = "127.0.0.1:9200"
+	host   = "http://192.168.1.135:9200/"
 	client *elastic.Client
 )
 
 func init() {
 	//建立elasticSearch的链接
 	var err error
-	client, err = elastic.NewClient(elastic.SetURL(host))
+	client, err = elastic.NewClient(elastic.SetSniff(false), elastic.SetURL(host))
 	if err != nil {
 		panic(fmt.Sprintf("connect elasticSearch search error:【%s】", err))
 	}
@@ -43,11 +44,11 @@ func Save(item Item, index string) (string, error) {
 	if item.Type == "" {
 		return "", errors.New("Type can not be empty!")
 	}
-	indexService := client.Index().Index(index).OpType(item.Type).BodyJson(item)
+	indexService := client.Index().Index(index).Type(item.Type).BodyJson(item)
 	if item.Id != "" {
 		indexService.Id(item.Id)
 	}
-	put, err := indexService.Do()
+	put, err := indexService.Do(context.Background())
 	if err != nil {
 		return "", err
 	}
@@ -57,5 +58,5 @@ func Save(item Item, index string) (string, error) {
 //查找
 func Gets(id string) (*elastic.GetResult, error) {
 	//通过id查找
-	return client.Get().Index("immoc").Type("crawler").Id(id).Do()
+	return client.Get().Index("immoc").Type("crawler").Id(id).Do(context.Background())
 }
