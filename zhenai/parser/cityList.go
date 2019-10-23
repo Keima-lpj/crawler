@@ -10,7 +10,7 @@ import (
 const cityListRegexpString = `<a href="(http://www.zhenai.com/zhenghun/[a-zA-Z0-9]+)" [^>]+>([^>]+)</a>`
 
 //这个是城市列表的解析器，通过解析城市列表页面的文本，返回下一级页面的request数组和对应的item
-func ParseCityList(contents []byte) engine.ParserResult {
+func ParseCityList(contents []byte, url string) engine.ParserResult {
 	//使用正则表达式来匹配到对应的城市和链接
 	re := regexp.MustCompile(cityListRegexpString)
 	match := re.FindAllSubmatch(contents, -1)
@@ -20,8 +20,9 @@ func ParseCityList(contents []byte) engine.ParserResult {
 	for _, v := range match {
 		result.Requests = append(result.Requests, engine.Request{
 			Url:        string(v[1]),
-			ParserFunc: ParseCity, //这里应该传下一级解析器，也就是城市解析器
+			ParserFunc: ParseCity, //传入城市解析器
 		})
+
 	}
 
 	return result

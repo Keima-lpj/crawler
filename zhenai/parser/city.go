@@ -12,7 +12,7 @@ const cityRegexpString = `<a href="(http://album.zhenai.com/u/[0-9]+)" [^>]*>([^
 const sexRegexpString = `<td width="180"><span class="grayL">性别：</span>([^<]+)</td>`
 
 //这个是城市列表的解析器，通过解析城市列表页面的文本，返回下一级页面的request数组和对应的item
-func ParseCity(contents []byte) engine.ParserResult {
+func ParseCity(contents []byte, url string) engine.ParserResult {
 	//使用正则表达式来匹配到对应的用户和链接
 	re := regexp.MustCompile(cityRegexpString)
 	match := re.FindAllSubmatch(contents, -1)
@@ -26,10 +26,11 @@ func ParseCity(contents []byte) engine.ParserResult {
 		sex := string(matchSex[k][1])
 		result.Requests = append(result.Requests, engine.Request{
 			Url: strings.Replace(string(v[1]), "http", "https", 1),
-			ParserFunc: func(bytes []byte) engine.ParserResult {
-				return ParsePerson(bytes, sex, string(v[1]))
-			}, //这里应该传下一级解析器，也就是用户解析器
+			ParserFunc: func(bytes []byte, url string) engine.ParserResult {
+				return ParsePerson(bytes, sex, url) //传入个人解析器
+			},
 		})
+		//由于不需要城市的信息，所以不需要将城市作为item传入result中
 	}
 
 	return result

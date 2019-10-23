@@ -32,7 +32,7 @@ func ItemSaver(index string) chan Item {
 			if err != nil {
 				log.Printf("save item : %v error. %v", item, err)
 			}
-			log.Printf("save success! item:%v, result:", item, result)
+			log.Printf("save success! item:%v, result:%v", item, result)
 		}
 	}()
 	return itemChan
@@ -40,7 +40,6 @@ func ItemSaver(index string) chan Item {
 
 //这个方法将item保存到elasticSearch中
 func Save(item Item, index string) (string, error) {
-
 	if item.Type == "" {
 		return "", errors.New("Type can not be empty!")
 	}

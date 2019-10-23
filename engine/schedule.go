@@ -34,7 +34,7 @@ func (q *QueueScheduler) Run() {
 		//开启循环调度器。这个循环调度器的作用是将request和worker分别从队列中取出
 		//将取出的request放入取出的worker中
 		for {
-			//声明本次活动的request和worker
+			//声明本次循环中活动的request和worker
 			var activeRequest Request
 			var activeWorker chan Request
 			//如果两个队列中都有值，则从两个队列中获取第一个值
