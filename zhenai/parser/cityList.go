@@ -17,12 +17,14 @@ func ParseCityList(contents []byte, url string) engine.ParserResult {
 
 	result := engine.ParserResult{}
 
+	//默认先只取前10个城市
+	match = match[0:9]
+
 	for _, v := range match {
 		result.Requests = append(result.Requests, engine.Request{
 			Url:        string(v[1]),
 			ParserFunc: ParseCity, //传入城市解析器
 		})
-
 	}
 
 	return result

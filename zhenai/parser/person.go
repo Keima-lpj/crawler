@@ -3,6 +3,7 @@ package parser
 import (
 	"crawler/engine"
 	"crawler/model"
+	"fmt"
 	"log"
 	"regexp"
 )
@@ -14,12 +15,11 @@ var (
 	heightRegexp = regexp.MustCompile(`<div [^>]+>([0-9]+cm)</div>`)
 	weightRegexp = regexp.MustCompile(`<div [^>]+>([0-9]+kg)</div>`)
 	incomeRegexp = regexp.MustCompile(`<div [^>]+>月收入:([^<]+)</div>`)
-	IdRegexp     = regexp.MustCompile(`http://album.zhenai.com/u/([\d]+)`)
+	IdRegexp     = regexp.MustCompile(`http[s*]://album.zhenai.com/u/([\d]+)`)
 )
 
-//这个是城市列表的解析器，通过解析城市列表页面的文本，返回下一级页面的request数组和对应的item
-func ParsePerson(contents []byte, gender, url string) engine.ParserResult {
-
+//这个是人的解析器，通过解析城市列表页面的文本，返回下一级页面的request数组和对应的item
+func ParsePerson(contents []byte, sex, url string) engine.ParserResult {
 	//使用正则表达式来匹配到对应的城市和链接
 	person := model.Person{}
 
@@ -30,7 +30,7 @@ func ParsePerson(contents []byte, gender, url string) engine.ParserResult {
 		person.Name = string(name[1])
 	}
 
-	person.Gender = gender
+	person.Gender = sex
 
 	age := ageRegexp.FindSubmatch(contents)
 	if len(age) >= 2 {
@@ -65,6 +65,8 @@ func ParsePerson(contents []byte, gender, url string) engine.ParserResult {
 	if err == nil {
 		log.Printf("jump save Id: %v. this Id has been saved", id)
 		return result
+	} else {
+		fmt.Println("query error:", err)
 	}
 
 	result = engine.ParserResult{

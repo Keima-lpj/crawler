@@ -22,6 +22,12 @@ func Fetch(url string) ([]byte, error) {
 	//request.Header.Add("Cookie", "xxxxxx")
 	request.Header.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36")
 	request.Header.Add("upgrade-insecure-requests", "1")
+	request.Header.Add("Accept-Encoding", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3")
+	request.Header.Add("Accept-Language", "gzip, deflate")
+	request.Header.Add("Cache-Control", "zh-CN,zh;q=0.9,en;q=0.8")
+	request.Header.Add("Connection", "keep-alive")
+	request.Header.Add("Cookie", "sid=efaad604-ed08-4203-9b22-5b9a2bdc05aa; Hm_lvt_2c8ad67df9e787ad29dbd54ee608f5d2=1571820651,1571822083,1571822087,1571822312; oneclickLoginSwitch=28635; oneClickRegisterSwitch=27615; __channelId=905821%2C0; Hm_lpvt_2c8ad67df9e787ad29dbd54ee608f5d2=1572586373")
+	request.Header.Add("Host", "www.zhenai.com")
 
 	if err != nil {
 		panic(err)

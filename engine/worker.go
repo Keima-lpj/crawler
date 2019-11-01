@@ -12,7 +12,6 @@ func work(r Request) (ParserResult, error) {
 		fmt.Printf("Got url body error : %s", err)
 		return ParserResult{}, err
 	}
-
 	//再通过解析器，来解析源代码，得到下一级的[]requests
 	return r.ParserFunc(body, r.Url), nil
 }
