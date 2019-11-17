@@ -25,10 +25,8 @@ func ParseCity(contents []byte, url string) engine.ParserResult {
 		//匹配这个用户的性别
 		sex := string(matchSex[k][1])
 		result.Requests = append(result.Requests, engine.Request{
-			Url: strings.Replace(string(v[1]), "http", "https", 1),
-			ParserFunc: func(bytes []byte, url string) engine.ParserResult {
-				return ParsePerson(bytes, sex, url) //传入个人解析器
-			},
+			Url:    strings.Replace(string(v[1]), "http", "https", 1),
+			Parser: NewProfileParser(sex),
 		})
 		//由于不需要城市的信息，所以不需要将城市作为item传入result中
 	}

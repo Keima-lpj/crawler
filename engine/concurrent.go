@@ -7,10 +7,13 @@ import (
 )
 
 type ConcurrentEngine struct {
-	Schedule    Schedule
-	WorkerCount int
-	ItemChan    chan Item
+	Schedule         Schedule
+	WorkerCount      int
+	ItemChan         chan Item
+	RequestProcessor Processor
 }
+
+type Processor func(r Request) (ParserResult, error)
 
 func (ce ConcurrentEngine) Run(seeds ...Request) {
 	//启动schedule，内部开启goroutine进行调度
@@ -44,6 +47,9 @@ func (ce ConcurrentEngine) Run(seeds ...Request) {
 
 }
 
+/**
+创建worker
+*/
 func (ce ConcurrentEngine) CreateWorker(out chan ParserResult, i int) {
 	in := make(chan Request)
 	go func(i int) {
@@ -56,10 +62,11 @@ func (ce ConcurrentEngine) CreateWorker(out chan ParserResult, i int) {
 			//取到值之后停止1秒调用一次
 			time.Sleep(time.Second)
 			//调用worker方法
-			result, err := work(r)
+			result, err := ce.RequestProcessor(r)
 			if err != nil {
 				log.Printf("get work error:%s, url:%s", err, r.Url)
 			}
+			//将结果写入到out channel中
 			out <- result
 		}
 	}(i)

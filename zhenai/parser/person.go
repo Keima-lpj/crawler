@@ -3,7 +3,7 @@ package parser
 import (
 	"crawler/engine"
 	"crawler/model"
-	"fmt"
+	"crawler_distributed/config"
 	"log"
 	"regexp"
 )
@@ -65,8 +65,6 @@ func ParsePerson(contents []byte, sex, url string) engine.ParserResult {
 	if err == nil {
 		log.Printf("jump save Id: %v. this Id has been saved", id)
 		return result
-	} else {
-		fmt.Println("query error:", err)
 	}
 
 	result = engine.ParserResult{
@@ -81,4 +79,23 @@ func ParsePerson(contents []byte, sex, url string) engine.ParserResult {
 	}
 
 	return result
+}
+
+//这个结构体为了包装新的Parser，由于person函数中有一个新的sex参数，所以要这样包装一层
+type ProfileParser struct {
+	Sex string
+}
+
+func NewProfileParser(sex string) *ProfileParser {
+	return &ProfileParser{
+		Sex: sex,
+	}
+}
+
+func (p *ProfileParser) Parser(contents []byte, url string) engine.ParserResult {
+	return ParsePerson(contents, p.Sex, url)
+}
+
+func (p *ProfileParser) Serialize() (name string, args interface{}) {
+	return config.ParseProfile, p.Sex
 }

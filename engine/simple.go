@@ -19,7 +19,7 @@ func (SimpleEngine) Run(seeds ...Request) {
 		requests = requests[1:]
 		fmt.Println("Fetching Url:", r.Url)
 
-		parseResult, err := work(r)
+		parseResult, err := Work(r)
 		if err != nil {
 			continue
 		}

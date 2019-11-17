@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	host   = "http://192.168.1.135:9200/"
+	host   = "http://127.0.0.1:9200/"
 	client *elastic.Client
 )
 

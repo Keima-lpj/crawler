@@ -17,12 +17,13 @@ func main() {
 	})*/
 
 	engine.ConcurrentEngine{
-		Schedule:    &engine.QueueScheduler{},
-		WorkerCount: 10,
-		ItemChan:    engine.ItemSaver("immoc"),
+		Schedule:         &engine.QueueScheduler{},
+		WorkerCount:      10,
+		ItemChan:         engine.ItemSaver("immoc4"),
+		RequestProcessor: engine.Work,
 	}.Run(engine.Request{
-		Url:        URL,
-		ParserFunc: parser.ParseCityList,
+		Url:    URL,
+		Parser: engine.NewFuncParser(parser.ParseCityList, "ParseCityList"),
 	})
 
 }
