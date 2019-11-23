@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"golang.org/x/net/html/charset"
 	"golang.org/x/text/encoding"
@@ -12,9 +13,12 @@ import (
 	"golang.org/x/text/transform"
 )
 
+//新建一个10毫秒触发一次的chan
+var timeLimiter = time.Tick(10 * time.Millisecond)
+
 //这里通过获取的url来返回对应解析成功的utf8格式的html文本
 func Fetch(url string) ([]byte, error) {
-
+	<-timeLimiter
 	client := &http.Client{}
 	request, err := http.NewRequest("GET", url, nil)
 

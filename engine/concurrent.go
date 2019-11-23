@@ -3,7 +3,6 @@ package engine
 import (
 	"fmt"
 	"log"
-	"time"
 )
 
 type ConcurrentEngine struct {
@@ -59,8 +58,6 @@ func (ce ConcurrentEngine) CreateWorker(out chan ParserResult, i int) {
 			ce.Schedule.WorkerReady(in)
 			//从in中获取数据，进行消费
 			r := <-in
-			//取到值之后停止1秒调用一次
-			time.Sleep(time.Second)
 			//调用worker方法
 			result, err := ce.RequestProcessor(r)
 			if err != nil {
