@@ -1,7 +1,7 @@
 package engine
 
 import (
-	"crawler/model"
+	"github.com/LiaoPuJian/crawler/model"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -11,7 +11,7 @@ func TestSave(t *testing.T) {
 	expect := Item{
 		Id:   "1",
 		Url:  "https://album.zhenai.com/u/1942899917",
-		Type: "crawler",
+		Type: "github.com/LiaoPuJian/crawler",
 		Payload: model.Person{
 			Name:   "lpj",
 			Gender: "男",

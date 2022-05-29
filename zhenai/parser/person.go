@@ -1,9 +1,8 @@
 package parser
 
 import (
-	"crawler/engine"
-	"crawler/model"
-	"crawler_distributed/config"
+	"github.com/LiaoPuJian/crawler/engine"
+	"github.com/LiaoPuJian/crawler/model"
 	"log"
 	"regexp"
 )
@@ -97,5 +96,5 @@ func (p *ProfileParser) Parser(contents []byte, url string) engine.ParserResult 
 }
 
 func (p *ProfileParser) Serialize() (name string, args interface{}) {
-	return config.ParseProfile, p.Sex
+	return "ParserProfile", p.Sex
 }

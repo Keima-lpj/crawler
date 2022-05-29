@@ -57,5 +57,5 @@ func Save(item Item, index string) (string, error) {
 //查找
 func Gets(id string) (*elastic.GetResult, error) {
 	//通过id查找
-	return client.Get().Index("immoc").Type("crawler").Id(id).Do(context.Background())
+	return client.Get().Index("immoc").Type("github.com/LiaoPuJian/crawler").Id(id).Do(context.Background())
 }

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"crawler/engine"
-	"crawler/zhenai/parser"
+	"github.com/LiaoPuJian/crawler/engine"
+	"github.com/LiaoPuJian/crawler/zhenai/parser"
 )
 
 const (
